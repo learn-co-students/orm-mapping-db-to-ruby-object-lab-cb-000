@@ -22,7 +22,7 @@ class Student
     # find the student in the database given a name
     # return a new instance of the Student class
 
-    sql = "SELECT * FROM students WHERE name = ?"
+    sql = "SELECT * FROM students WHERE name = ? LIMIT 1"
     result = DB[:conn].execute(sql, name)
 
     new_from_db result.first
@@ -50,7 +50,7 @@ class Student
   end
 
   def self.first_student_in_grade_10
-    sql = "SELECT * FROM students WHERE grade = 10"
+    sql = "SELECT * FROM students WHERE grade = 10 LIMIT 1"
     result = DB[:conn].execute(sql)
 
     new_from_db result.first
