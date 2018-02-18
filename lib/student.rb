@@ -58,6 +58,7 @@ class Student
   end
 
   # returns an array of all students in grades 11 or below
+    # This is a class method that does not need an argument
   def self.students_below_12th_grade
     sql = <<-SQL
       SELECT * FROM students
@@ -70,7 +71,18 @@ class Student
   end
 
   # returns an array of the first X students in grade 10
-  def self.first_X_students_in_grade_10
+    # This is a class method that takes in an argument of the number of students from grade 10 to select
+    # This method should return an array of exactly X number of students
+  def self.first_X_students_in_grade_10(num)
+    sql = <<-SQL
+      SELECT * FROM students
+      WHERE grade = 10
+      LIMIT ?
+    SQL
+
+    DB[:conn].execute(sql, num).map do |row|
+      self.new_from_db(row)
+    end
   end
 
   # returns the first student in grade 10
