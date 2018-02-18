@@ -14,9 +14,17 @@ class Student
   end
 
   # returns all student instances from the db
-    # retrieve all the rows from the "Students" database
-    # remember each row should be a new instance of the Student class
+    # This is a class method that returns everything in the database
+    # First, run the SQL to return everything (*) from a table
+    # Then, use the .new_from_db method to create a student instance for each row that comes back from the database
   def self.all
+    sql = <<-SQL
+      SELECT * FROM students
+    SQL
+
+    DB[:conn].execute(sql).map do |row|
+      self.new_from_db(row)
+    end
   end
 
   # returns an instance of student that matches the name from the DB
