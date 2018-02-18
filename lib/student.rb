@@ -86,7 +86,18 @@ class Student
   end
 
   # returns the first student in grade 10
-  def first_student_in_grade_10
+    # This is a class method that does not need an argument
+  def self.first_student_in_grade_10
+    sql = <<-SQL
+      SELECT * FROM students
+      WHERE grade = 10
+      ORDER BY students.id
+      LIMIT 1
+    SQL
+
+    DB[:conn].execute(sql).map do |row|
+      self.new_from_db(row)
+    end.first # use the .first method to grab the first element from the returned array
   end
 
   # returns an array of all students in a given grade X
