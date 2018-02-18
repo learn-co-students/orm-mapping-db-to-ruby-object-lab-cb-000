@@ -20,9 +20,20 @@ class Student
   end
 
   # returns an instance of student that matches the name from the DB
-    # find the student in the database given a name
-    # return a new instance of the Student class
+    # This is a class method that accepts a name of a student
+    # First, run a SQL query to get the result from the database where the student's name matches the name passed into the argument
+    # Next, take the result and create a new student instance using the .new_from_db method
   def self.find_by_name(name)
+    # 1. use a question mark where we want the name parameter to be passed in
+    sql = <<-SQL
+      SELECT * FROM students
+      WHERE name = ?
+      LIMIT 1
+    SQL
+
+    DB[:conn].execute(sql, name).map do |row| # 2. then include name as the second argument to the execute method
+      self.new_from_db(row)
+    end.first # The return value of the .map method is an array, so use the .first method to grab the first element from the returned array
   end
 
   def save
