@@ -101,7 +101,16 @@ class Student
   end
 
   # returns an array of all students in a given grade X
-  def self.all_students_in_grade_X
+    # This is a class method that takes in an argument of grade for which to retrieve the roster
+  def self.all_students_in_grade_X(grade)
+    sql = <<-SQL
+      SELECT * FROM students
+      WHERE grade = ?
+    SQL
+
+    DB[:conn].execute(sql, grade).map do |row|
+      self.new_from_db(row)
+    end
   end
 
   def save
