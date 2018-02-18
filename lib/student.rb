@@ -44,6 +44,35 @@ class Student
     end.first # The return value of the .map method is an array, so use the .first method to grab the first element from the returned array
   end
 
+  # returns an array of all students in grades 9
+    # This is a class method that does not need an argument
+  def self.count_all_students_in_grade_9
+    sql = <<-SQL
+      SELECT * FROM students
+      WHERE grade = 9
+    SQL
+
+    DB[:conn].execute(sql).map do |row|
+      self.new_from_db(row)
+    end
+  end
+
+  # returns an array of all students in grades 11 or below
+  def self.students_below_12th_grade
+  end
+
+  # returns an array of the first X students in grade 10
+  def self.first_X_students_in_grade_10
+  end
+
+  # returns the first student in grade 10
+  def first_student_in_grade_10
+  end
+
+  # returns an array of all students in a given grade X
+  def self.all_students_in_grade_X
+  end
+
   def save
     sql = <<-SQL
       INSERT INTO students (name, grade)
